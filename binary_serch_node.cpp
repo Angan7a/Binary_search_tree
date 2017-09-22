@@ -43,10 +43,14 @@ public:
 			do_zniszczenia.push_back(newNode);
 		if(root != NULL) {
 			Node* n = findFreeNode(newNode->getValue(), root);
-			if(newNode->getValue() < n->getValue()) {
-				n->left = newNode;
+			if(n->getValue() == a) {
+				cout << "Numebr " << a << " is currently in the tree!" << endl; 
 			} else {
-				n->right = newNode;
+				if(newNode->getValue() < n->getValue()) {
+					n->left = newNode;
+				} else {
+					n->right = newNode;
+				}
 			}
 		} else {
 			root = newNode;
@@ -54,6 +58,7 @@ public:
 		howMany++;
 	}
 	Node* findFreeNode(int a, Node* node) {
+		if(node->getValue() == a) { return node;}
 		if(node->getRight() == NULL && a > node->getValue()) { return node;}
 		if(node->getLeft() == NULL && a < node->getValue()) { return node;}
 
@@ -110,7 +115,7 @@ public:
 
 
 	void printTree() {
-		int t=300;
+		int t=150;
 		int v[100][t];
 		char c[100][t];
 		int k=t/2;
@@ -138,11 +143,13 @@ public:
 				if(v[i][j] != 0) {
 					n = search(v[i][j], root)->getLeft();
 					if(n != NULL) {
+						if(k <= 0) c[i+1][j-1] = 'L';
 						for(int a=0; a<k; a++) c[i+1][j-a] = '-';
 						v[i+2][j-k] = n->getValue();
 					}
 					n = search(v[i][j], root)->getRight();
 					if(n != NULL) {
+						if(k <= 0) c[i+1][j+1] = 'R';
 						for(int a=0; a<k; a++) c[i+1][j+a] = '>';
 						v[i+2][j+k] = n->getValue();
 					}
@@ -212,11 +219,10 @@ int main()
 	Tree t(29);
 
 	t.addNode(7);
-	t.addNode(6);
-	t.addNode(55);
-	t.addNode(10);
-	t.addNode(4);
-	t.addNode(1);
+	t.addNode(20);
+	t.addNode(5);
+	t.addNode(35);
+	t.addNode(13);
 	t.addNode(12);
 	t.addNode(15);
 	t.addNode(18);
