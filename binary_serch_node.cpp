@@ -144,7 +144,7 @@ public:
 		while(a--) cout << " ";
 	}
 
-	void printTree1() {
+	void printTreeFromNode(Node *node) {
 		int t=170;
 		int v[100][t];
 		char c[100][t];
@@ -165,7 +165,7 @@ public:
 				}
 			}
 		}
-		v[1][k] = root->getValue();
+		v[1][k] = node->getValue();
 
 		for(int i=0; i<h; i++) {
 			k = k*0.7;
@@ -263,8 +263,18 @@ int main()
 	cout << "Tree has ";
 	if(t.search(13, t.root) == NULL) cout << "not ";
 	cout  << "number " << 13 << endl;
-
-	t.printTree1();
+	t.printTreeFromNode(t.search(29, t.root));
 	t.printTree();
+	int a=8;
+	while(a != 0) {
+		cin >> a;
+		if(t.search(a, t.root) != NULL ) {
+			t.printTreeFromNode(t.search(a, t.root));
+			cout << "Head of tree is number: " << t.root->getValue() << endl;
+		} else {
+			cout << "In the tree no number: " << a << endl;
+			cout << "Head of tree is number: " << t.root->getValue() << endl;
+		}
+	}
 return 0;
 }
