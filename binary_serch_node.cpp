@@ -149,7 +149,7 @@ public:
 		int v[100][t];
 		char c[100][t];
 		int k=t/2;
-		int h=32;
+		int h=18;
 		Node* n;
 		for(int j=0; j<t; j++) {
 			for(int i=0; i<h; i++) {
@@ -173,13 +173,19 @@ public:
 				if(v[i][j] != 0) {
 					n = search(v[i][j], root)->getLeft();
 					if(n != NULL) {
+						if(k <= 0) c[i+1][j-1] = 'L';
 						for(int a=0; a<k; a++) c[i+1][j-a] = '-';
 						v[i+2][j-k] = n->getValue();
 					}
 					n = search(v[i][j], root)->getRight();
 					if(n != NULL) {
+						if(k <= 0) c[i+1][j+1] = 'R';
 						for(int a=0; a<k; a++) c[i+1][j+a] = '>';
-						v[i+2][j+k] = n->getValue();
+						if(v[i+2][j+k] == 0) {
+							v[i+2][j+k] = n->getValue();
+						} else {
+							v[i+2][j+k+2] = n->getValue();
+						}
 					}
 				}
 			}
@@ -249,6 +255,8 @@ int main()
 	t.addNode(25);
 	t.addNode(22);
 	t.addNode(26);
+	t.addNode(24);
+	t.addNode(19);
 
 //	t.remove(18);
 
