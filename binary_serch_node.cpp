@@ -115,88 +115,27 @@ public:
 
 
 	void printTree() {
-		int t=150;
-		int v[100][t];
-		char c[100][t];
-		int k=t/2;
-		int h=15;
-		Node* n;
-		for(int j=0; j<t; j++) {
-			for(int i=0; i<h; i++) {
-				if(v[i][j] != 0) {
-					v[i][j] = 0;
-				}
+		int floors=0;
+		vector< vector<int> > v(10),v1(10);
+		v[1].push_back(0);
+		v[2].push_back(0);
+		Node* node;
+		v[0].push_back(root->getValue());
+		while(!v[0].empty()) {
+			for(vector<int>::iterator itr=v[0].begin(); itr != v[0].end(); itr++) {
+				node = search(*itr, root)->getLeft();
+				if(node != NULL) { v1[0].push_back(node->getValue()); v[1][0] += 1; }
+				node = search(*itr, root)->getRight();
+				if(node != NULL) { v1[0].push_back(node->getValue()); v[2][0] +=1; }
 			}
+			floors++;
+			v = v1;
+			v1[0].clear();
 		}
-		for(int j=0; j<t; j++) {
-			for(int i=0; i<h; i++) {
-				if(c[i][j] != 0) {
-					c[i][j] = 0;
-				}
-			}
-		}
-		v[1][k] = root->getValue();
+		cout << floors << endl;
+		cout << v[1][0] << endl;
+		cout << v[2][0] << endl;
 
-		for(int i=0; i<h; i++) {
-			k = k*0.7;
-			for(int j=0; j<t; j++) {
-				if(v[i][j] != 0) {
-					n = search(v[i][j], root)->getLeft();
-					if(n != NULL) {
-						if(k <= 0) c[i+1][j-1] = 'L';
-						for(int a=0; a<k; a++) c[i+1][j-a] = '-';
-						v[i+2][j-k] = n->getValue();
-					}
-					n = search(v[i][j], root)->getRight();
-					if(n != NULL) {
-						if(k <= 0) c[i+1][j+1] = 'R';
-						for(int a=0; a<k; a++) c[i+1][j+a] = '>';
-						v[i+2][j+k] = n->getValue();
-					}
-				}
-			}
-		}
-		for(int i=0; i<h; i++) {
-			for(int j=0; j<t; j++) {
-				if (i%2) {
-					if(v[i][j] != 0) {
-						cout << v[i][j];
-					} else {
-						cout << " ";
-					}
-				} else {
-					if(c[i][j] != 0) {
-						cout << c[i][j];
-					} else {
-						cout << " ";
-					}
-				}
-			}
-		cout << endl;
-		}
-
-	}
-	void printLeft(Node* node, int h) {
-		if(node == NULL) return;
-		printChar(h/2, ' ');
-		cout << "|";
-		printChar(h/2, '-');
-		cout << "^";
-		cout << endl;
-		printChar(h/2, ' ');
-		cout << node->getValue();
-		cout << endl;
-		printLeft(node->getLeft(), h/2);
-	}
-	void printRight(Node* node, int h) {
-		if(node == NULL) return;
-		printChar(h/2, '-');
-		cout << "|";
-		cout << endl;
-		printChar(h/2, ' ');
-		cout << node->getValue();
-		cout << endl;
-		printLeft(node->getLeft(), h/2);
 	}
 	void printChar(int a, char c) {
 		while(a--) cout << c;
@@ -219,10 +158,11 @@ int main()
 	Tree t(29);
 
 	t.addNode(7);
-	t.addNode(20);
-	t.addNode(5);
-	t.addNode(35);
-	t.addNode(13);
+	t.addNode(6);
+	t.addNode(55);
+	t.addNode(10);
+	t.addNode(4);
+	t.addNode(1);
 	t.addNode(12);
 	t.addNode(15);
 	t.addNode(18);
@@ -232,14 +172,8 @@ int main()
 	t.addNode(54);
 	t.addNode(53);
 	t.addNode(51);
-/*	t.addNode(20);
-	t.addNode(23);
-	t.addNode(10);
-	t.addNode(15);
-	t.addNode(30);
+//	t.remove(18);
 
-	t.remove(18);
-*/
 	cout << "Tree has ";
 	if(t.search(5, t.root) == NULL) cout << "not ";
 	cout  << "number " << 5 << endl;
