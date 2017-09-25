@@ -97,6 +97,25 @@ public:
 		return node;
 	}
 /***************************/
+
+
+
+
+	Node* findLeftNodePointingForInt(int a, Node *node) {
+        cout << node->getLeft()->getValue() << " ~!!!!" << endl;
+                if(node == NULL) {  cout << "NULL" << endl; return NULL;}
+                if(node->getLeft()->getValue() == a) { cout << "==" << endl; return node; }
+                if(a < node->getValue()) {
+//cout << "LLL" << endl; return findLeftNodePointingForInt(a, node->getLeft());
+		}
+                if(a > node->getValue()) {
+//cout << "RRR" << endl; return findLeftNodePointingForInt(a, node->getRight());
+		}
+        }
+
+
+
+
 	void printTreeFromNode(Node *node) {
 		int t=170;
 		int v[100][t];
