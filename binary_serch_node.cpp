@@ -77,7 +77,7 @@ public:
 			cout << "I cann't remove numebr " << a << ", beacause tree hasn't this number!" << endl;
 		} else {
 			if(a < root->getValue()) {
-				Node* nodeBefore = findLeftNodePointingForInt(a,root);
+				Node* nodeBefore = findLeftNodePointingForNULL(search(a, root));
 				cout << "Node Before " << a << "  is "<< nodeBefore->getValue() << endl;
 				nodeBefore->left = node->getRight();
 			} else {
@@ -85,18 +85,18 @@ public:
 			}
 		}
 	}
-	Node* findLeftNodePointingForInt(int a, Node *node) {
-	cout << node->getLeft()->getValue() << " ~!!!!" << endl;
-		if(node == NULL) {  cout << "NULL" << endl; return NULL;}
-		if(node->getLeft()->getValue() == a) { cout << "==" << endl; return node; }
-		if(a < node->getValue()) {
-//cout << "LLL" << endl; return findLeftNodePointingForInt(a, node->getLeft());
-}
-		if(a > node->getValue()) {
-//cout << "RRR" << endl; return findLeftNodePointingForInt(a, node->getRight());
-}
-	}
 
+/*********************************/
+	Node* findLeftNodePointingForNULL(Node *node) {
+		int a = node->getValue();
+		if(node == NULL) {  cout << "NULL" << endl; return NULL;}
+		if(node->getLeft() == NULL) { cout << "==" << endl; return node->getRight(); }
+		while(node->getLeft() != NULL) {
+			node = node->getLeft();
+		}
+		return node;
+	}
+/***************************/
 	void printTreeFromNode(Node *node) {
 		int t=170;
 		int v[100][t];
@@ -229,5 +229,9 @@ int main()
 			cout << "In the tree no number: " << a << endl;
 		}
 	}
+
+	Node* ab = t.findLeftNodePointingForNULL(t.search(12, t.root));
+	cout << ab->getValue() << endl;
+
 return 0;
 }
