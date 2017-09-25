@@ -28,16 +28,6 @@ public:
 	int howMany;
 	vector<Node*> do_zniszczenia;
 	Tree(int a) : root(new Node(a)) { do_zniszczenia.push_back(root); howMany = 1;}
-	void addNodeRight(Node *newNode, Node *place) {
-			Node* n = place->getRight();
-			place->right = newNode;
-			newNode->right = n;
-	}
-	void addNodeLeft(Node *newNode, Node *place) {
-			Node* n = place->getLeft();
-			place->left = newNode;
-			newNode->left = n;
-	}
 	void addNode(int a) {
 			Node* newNode = new Node(a);
 			do_zniszczenia.push_back(newNode);
@@ -65,12 +55,6 @@ public:
 
 		if(a < node->getValue()) return findFreeNode(a, node->getLeft());
 		if(a > node->getValue()) return findFreeNode(a, node->getRight());
-	}
-	int getValue() {
-		return root->getValue();
-	}
-	Node* goLeft() {
-		return root->left;
 	}
 
 	Node* search(int a, Node* node) {
@@ -111,37 +95,6 @@ public:
 		if(a > node->getValue()) {
 //cout << "RRR" << endl; return findLeftNodePointingForInt(a, node->getRight());
 }
-	}
-
-
-	void printTree() {
-		int floors=0;
-		vector< vector<int> > v(10),v1(10);
-		v[1].push_back(0);
-		v[2].push_back(0);
-		Node* node;
-		v[0].push_back(root->getValue());
-		while(!v[0].empty()) {
-			for(vector<int>::iterator itr=v[0].begin(); itr != v[0].end(); itr++) {
-				node = search(*itr, root)->getLeft();
-				if(node != NULL) { v1[0].push_back(node->getValue()); v[1][0] += 1; }
-				node = search(*itr, root)->getRight();
-				if(node != NULL) { v1[0].push_back(node->getValue()); v[2][0] +=1; }
-			}
-			floors++;
-			v = v1;
-			v1[0].clear();
-		}
-		cout << floors << endl;
-		cout << v[1][0] << endl;
-		cout << v[2][0] << endl;
-
-	}
-	void printChar(int a, char c) {
-		while(a--) cout << c;
-	}
-	void printSpace(int a) {
-		while(a--) cout << " ";
 	}
 
 	void printTreeFromNode(Node *node) {
@@ -211,6 +164,7 @@ public:
 
 	}
 
+
 	~Tree() {
 		if(!do_zniszczenia.empty()) {
 			for(vector<Node*>::reverse_iterator itr = do_zniszczenia.rbegin(); itr != do_zniszczenia.rend(); ++itr) {
@@ -264,16 +218,15 @@ int main()
 	if(t.search(13, t.root) == NULL) cout << "not ";
 	cout  << "number " << 13 << endl;
 	t.printTreeFromNode(t.search(29, t.root));
-	t.printTree();
 	int a=8;
 	while(a != 0) {
+		cout << "Head of tree is number: " << t.root->getValue() << endl;
+		cout << "Give number node, which you want print (press 0 to quit): ";
 		cin >> a;
 		if(t.search(a, t.root) != NULL ) {
 			t.printTreeFromNode(t.search(a, t.root));
-			cout << "Head of tree is number: " << t.root->getValue() << endl;
 		} else {
 			cout << "In the tree no number: " << a << endl;
-			cout << "Head of tree is number: " << t.root->getValue() << endl;
 		}
 	}
 return 0;
