@@ -34,7 +34,7 @@ public:
 		if(root != NULL) {
 			Node* n = findFreeNode(newNode->getValue(), root);
 			if(n->getValue() == a) {
-				cout << "Numebr " << a << " is currently in the tree!" << endl; 
+				cout << "Numebr " << a << " is currently in the tree!" << endl;
 			} else {
 				if(newNode->getValue() < n->getValue()) {
 					n->left = newNode;
@@ -73,27 +73,61 @@ public:
 
 	void remove(int a) {
 		Node* node = search(a, root);
+		if(node->getValue() == root->getValue()) {
+			cout << "I cann't remove root numebr " << a << "!" << endl;
+/*			if(root->getLeft() != NULL) {
+				Node* r = root;
+				Node* rL = root->getLeft()->getRight();
+				Node* nodeLeftNULL = findLeftNodePointingForNULL(r->getRight());
+				root = r->getLeft();
+				root->right = r->getRight();
+				nodeLeftNULL->left = rL;
+			} */
+			if(root->getRight() != NULL) {
+				Node* rR = root->getRight();
+				Node* rL = root->getLeft();
+				Node* nodeLeftNULL = findLeftNodePointingForNULL(rR->getLeft());
+				root = rR;
+				root->right = rR->getRight();
+				nodeLeftNULL->left = rL;
+			}
+
+			return;
+		}
 		if(node == NULL) {
 			cout << "I cann't remove numebr " << a << ", beacause tree hasn't this number!" << endl;
 		} else {
-			if(a < root->getValue()) {
-				Node* nodeBefore = findLeftNodePointingForInt(a, root);
-				Node* nodeLeftNULL = findLeftNodePointingForNULL(node->getRight());
+			Node* nodeBefore = findNodePointingForInt(a, root);
+			Node* nodeLeftNULL = findLeftNodePointingForNULL(node->getRight());
+			cout << "After nodeLeftNULL" << endl;
+			if(a < nodeBefore->getValue()) {
+				if(nodeLeftNULL == NULL) {
+					nodeBefore->left = node->getLeft();
+				} else {
 				cout << "Node Before " << a << "  is "<< nodeBefore->getValue() << endl;
 				nodeBefore->left = node->getRight();
 				cout << "Node left NULL " << a << "  is "<< nodeLeftNULL->getValue() << endl;
 				nodeLeftNULL->left = node->getLeft();
+				}
 			} else {
-				cout << "a is biggerthan root" << endl;
+				if(nodeLeftNULL == NULL) {
+					nodeBefore->right = node->getLeft();
+				} else {
+					cout << "Node Before " << a << "  is "<< nodeBefore->getValue() << endl;
+					nodeBefore->right = node->getRight();
+					cout << "Node left NULL " << a << "  is "<< nodeLeftNULL->getValue() << endl;
+					nodeLeftNULL->left = node->getLeft();
+				}
+
 			}
 		}
 	}
 
 /*********************************/
 	Node* findLeftNodePointingForNULL(Node *node) {
-		int a = node->getValue();
+//		int a = node->getValue();
 		if(node == NULL) {  cout << "NULL" << endl; return NULL;}
-		if(node->getLeft() == NULL) { cout << "==" << endl; return node->getRight(); }
+		if(node->getLeft() == NULL) { cout << "==" << endl; return node; }
 		while(node->getLeft() != NULL) {
 			node = node->getLeft();
 		}
@@ -104,16 +138,28 @@ public:
 
 
 
-	Node* findLeftNodePointingForInt(int a, Node *node) {
-//        cout << node->getLeft()->getValue() << " ~!!!!" << endl;
+	Node* findNodePointingForInt(int a, Node *node) {
+	        cout << "I'm in findNodePointingForINT" << endl;
                 if(node == NULL) {  cout << "NULL" << endl; return NULL;}
-                if(node->getLeft()->getValue() == a) { cout << "==" << endl; return node; }
+                if(node->getLeft() == NULL && node->getRight() != NULL) {
+			if(node->getRight()->getValue() == a) return node;
+			cout << "!!!!!!!!!" << endl;
+			return findNodePointingForInt(a, node->getRight());
+		}
+                if(node->getRight() == NULL && node->getLeft() != NULL) {
+			if(node->getLeft()->getValue() == a) return node;
+			return findNodePointingForInt(a, node->getLeft());
+		}
+		if(node->getLeft()->getValue() == a || node->getRight()->getValue() == a) { cout << "==" << endl; return node; }
+
+
                 if(a < node->getValue()) {
-cout << "LLL" << endl; return findLeftNodePointingForInt(a, node->getLeft());
+cout << "LLL" << endl; return findNodePointingForInt(a, node->getLeft());
 		}
                 if(a > node->getValue()) {
-cout << "RRR" << endl; return findLeftNodePointingForInt(a, node->getRight());
+cout << "RRR" << endl; return findNodePointingForInt(a, node->getRight());
 		}
+
         }
 
 
@@ -241,15 +287,17 @@ int main()
 	cout  << "number " << 13 << endl;
 	t.printTreeFromNode(t.search(29, t.root));
 	int a=8;
-		t.remove(4);
 
 	while(a != 0) {
-		cout << "Head of tree is number: " << t.root->getValue() << endl;
-		cout << "Give number node, which you want print (press 0 to quit): ";
-
+//		cout << "Head of tree is number: " << t.root->getValue() << endl;
+//		cout << "Give number node, which you want print (press 0 to quit): ";
+		cout << "Give number node, which you want delete: ";
 		cin >> a;
+
 		if(t.search(a, t.root) != NULL ) {
-			t.printTreeFromNode(t.search(a, t.root));
+//			t.printTreeFromNode(t.search(a, t.root));
+			t.remove(a);
+			t.printTreeFromNode(t.root);
 		} else {
 			cout << "In the tree no number: " << a << endl;
 		}
