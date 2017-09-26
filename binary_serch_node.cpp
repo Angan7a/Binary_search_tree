@@ -75,24 +75,30 @@ public:
 		Node* node = search(a, root);
 		if(node->getValue() == root->getValue()) {
 			if(root->getLeft() != NULL) {
-				Node* r = root;
-				Node* rL = root->getLeft()->getRight();
-				Node* nodeLeftNULL = findLeftNodePointingForNULL(r->getRight());
-				root = r->getLeft();
-				root->right = r->getRight();
-				nodeLeftNULL->left = rL;
+				Node* newRoot = root->getLeft();
+				Node* newRight = root->getRight();
+//				Node* newLeft = newRoot->getLeft();
+				Node* nodeLeftNULL = findLeftNodePointingForNULL(newRight);
+				if(nodeLeftNULL == NULL) {
+					root = newRoot;
+					root->left = newRoot->getLeft();
+				} else {
+					nodeLeftNULL->left = newRoot->getRight();
+					root = newRoot;
+					root->right = newRight;
+				}
 			} else if(root->getRight() != NULL) {
-				Node* rR = root->getRight();
-				Node* rL = root->getLeft();
-				Node* nodeLeftNULL = findLeftNodePointingForNULL(rR->getLeft());
+				Node* newRoot = root->getRight();
+				Node* newRight = newRoot->getRight();
+				Node* newLeft = root->getLeft();
+				Node* nodeLeftNULL = findLeftNodePointingForNULL(newRoot);
 
 				if(nodeLeftNULL == NULL) {
-					root = rR;
-					root->left = rL;
+					root = newRoot;
 				} else {
-					root = rR;
-					root->right = rR->getRight();
-					nodeLeftNULL->left = rL;
+					nodeLeftNULL->left = newLeft;
+					root = newRoot;
+					root->right = newRight;
 				}
 			} else {
 				cout << "I cann't remove root numebr " << a << "!" << endl;
