@@ -74,24 +74,29 @@ public:
 	void remove(int a) {
 		Node* node = search(a, root);
 		if(node->getValue() == root->getValue()) {
-			cout << "I cann't remove root numebr " << a << "!" << endl;
-/*			if(root->getLeft() != NULL) {
+			if(root->getLeft() != NULL) {
 				Node* r = root;
 				Node* rL = root->getLeft()->getRight();
 				Node* nodeLeftNULL = findLeftNodePointingForNULL(r->getRight());
 				root = r->getLeft();
 				root->right = r->getRight();
 				nodeLeftNULL->left = rL;
-			} */
-			if(root->getRight() != NULL) {
+			} else if(root->getRight() != NULL) {
 				Node* rR = root->getRight();
 				Node* rL = root->getLeft();
 				Node* nodeLeftNULL = findLeftNodePointingForNULL(rR->getLeft());
-				root = rR;
-				root->right = rR->getRight();
-				nodeLeftNULL->left = rL;
-			}
 
+				if(nodeLeftNULL == NULL) {
+					root = rR;
+					root->left = rL;
+				} else {
+					root = rR;
+					root->right = rR->getRight();
+					nodeLeftNULL->left = rL;
+				}
+			} else {
+				cout << "I cann't remove root numebr " << a << "!" << endl;
+			}
 			return;
 		}
 		if(node == NULL) {
